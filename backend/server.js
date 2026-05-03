@@ -8,6 +8,8 @@ const bcrypt = require('bcryptjs');
 const Book = require('./models/Book');
 const Request = require('./models/Request');
 const User = require('./models/User');
+const OTP = require('./models/OTP');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +21,17 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI.replace(/^"|"$|'/g, '').trim())
 .then(() => console.log('MongoDB Connected Successfully'))
 .catch(err => console.error('MongoDB Connection Error:', err));
+
+// Email Transporter setup
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 // Initial data seeding
 const DEFAULT_BOOKS = [
@@ -47,18 +60,70 @@ const seedBooks = async () => {
 mongoose.connection.once('open', seedBooks);
 
 // --- Auth Routes ---
+app.post('/api/auth/send-otp', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: 'Email already registered' });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Save or update OTP
+    await OTP.findOneAndUpdate(
+      { email },
+      { email, otp, createdAt: new Date() },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    // LOG OTP to terminal so you can test without Brevo!
+    console.log(`\n===========================================`);
+    console.log(`   TEST OTP GENERATED FOR: ${email}`);
+    console.log(`   YOUR OTP IS: ${otp}`);
+    console.log(`===========================================\n`);
+
+    // Send email (wrapped in try/catch so Brevo's 502 error doesn't break the app)
+    try {
+      await transporter.sendMail({
+        from: `"Sal Library" <${process.env.SMTP_SENDER_EMAIL || process.env.SMTP_USER}>`,
+        to: email,
+        subject: 'Your Verification OTP',
+        text: `Your OTP for Sal Library registration is: ${otp}. It is valid for 5 minutes.`,
+      });
+      console.log('>>> SUCCESS: Email actually sent to Brevo!');
+    } catch (emailErr) {
+      console.log('\n>>> BREVO FAILED TO SEND EMAIL! EXACT REASON:');
+      console.log(emailErr.message || emailErr);
+      console.log('\n');
+    }
+
+    res.json({ message: 'OTP generated! Check your backend terminal to see it.' });
+  } catch (err) {
+    console.error('OTP Error details:', err);
+    res.status(500).json({ message: 'Error generating OTP: ' + (err.message || 'Unknown error') });
+  }
+});
+
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, otp } = req.body;
     
+    if (!otp) return res.status(400).json({ message: 'OTP is required' });
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email already registered' });
     }
 
+    const otpRecord = await OTP.findOne({ email });
+    if (!otpRecord || otpRecord.otp !== otp) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword, role: 'student' });
     await user.save();
+
+    await OTP.deleteOne({ email });
 
     const token = jwt.sign({ email: user.email, role: user.role, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.status(201).json({ token, user: { email: user.email, role: user.role, name: user.name } });
