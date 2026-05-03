@@ -76,16 +76,16 @@ const StudentDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Welcome Section */}
-        <div className="glass-panel p-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white border-none">
+        <div className="glass-panel p-8 bg-gradient-to-r from-primary to-secondary text-white border-none shadow-lg shadow-primary/20">
           <h2 className="text-3xl font-bold mb-2">Welcome to the E-Library</h2>
-          <p className="text-blue-100 max-w-2xl">Browse our collection of premium educational resources. Rent books easily and track your requests all in one place.</p>
+          <p className="text-sky-100 max-w-2xl">Browse our collection of premium educational resources. Rent books easily and track your requests all in one place.</p>
         </div>
 
         {/* Books Section */}
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-              <Library className="text-blue-600" /> Available Books
+              <Library className="text-primary" /> Available Books
             </h3>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -94,7 +94,7 @@ const StudentDashboard = () => {
                 placeholder="Search by title or author..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full sm:w-80 pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all shadow-sm"
+                className="w-full sm:w-80 pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm"
               />
             </div>
           </div>
@@ -116,7 +116,7 @@ const StudentDashboard = () => {
         {/* My Requests Section */}
         <div className="space-y-6 pt-8">
           <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-            <Clock className="text-blue-600" /> My Rental Requests
+            <Clock className="text-primary" /> My Rental Requests
           </h3>
 
           <div className="glass-panel overflow-hidden">
@@ -154,9 +154,9 @@ const StudentDashboard = () => {
                         </td>
                         <td className="p-4">
                           {req.status.includes('Approved') ? (
-                            <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm">
-                              <p className="font-bold text-blue-800 mb-1">Pay ₹{req.approvedCost} offline to admin</p>
-                              <p className="text-blue-600 text-xs leading-relaxed">
+                            <div className="bg-sky-50 border border-sky-100 rounded-lg p-3 text-sm">
+                              <p className="font-bold text-primary mb-1">Pay ₹{req.approvedCost} offline to admin</p>
+                              <p className="text-sky-700 text-xs leading-relaxed">
                                 Please visit Admin Office, Ground Floor, Sal College with this approval and pay cash. Your book will be issued after payment confirmation.
                               </p>
                             </div>
@@ -189,19 +189,19 @@ const StudentDashboard = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Full Name</label>
-                <input type="text" required value={formData.studentName} onChange={e => setFormData({...formData, studentName: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                <input type="text" required value={formData.studentName} onChange={e => setFormData({...formData, studentName: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Student ID</label>
-                <input type="text" required value={formData.studentId} onChange={e => setFormData({...formData, studentId: e.target.value})} placeholder="e.g. SAL001" className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                <input type="text" required value={formData.studentId} onChange={e => setFormData({...formData, studentId: e.target.value})} placeholder="e.g. SAL001" className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Phone Number</label>
-                <input type="tel" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                <input type="tel" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Rental Duration (Days)</label>
-                <select value={formData.duration} onChange={e => setFormData({...formData, duration: Number(e.target.value)})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white">
+                <select value={formData.duration} onChange={e => setFormData({...formData, duration: Number(e.target.value)})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-white">
                   <option value={7}>7 Days</option>
                   <option value={14}>14 Days</option>
                   <option value={21}>21 Days</option>
@@ -214,7 +214,7 @@ const StudentDashboard = () => {
                 <button type="button" onClick={() => setShowRentModal(false)} className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors">
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-blue-200">
+                <button type="submit" className="flex-1 bg-primary hover:bg-primary-hover text-white py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-primary/30">
                   Submit Request
                 </button>
               </div>

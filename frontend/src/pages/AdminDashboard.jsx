@@ -138,15 +138,15 @@ const AdminDashboard = () => {
         
         {/* Stats Row */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-blue-500">
-            <div className="p-3 bg-blue-100 text-blue-600 rounded-xl"><BookOpen size={24} /></div>
+          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-primary">
+            <div className="p-3 bg-sky-100 text-primary rounded-xl"><BookOpen size={24} /></div>
             <div>
               <p className="text-sm text-slate-500 font-medium">Total Books</p>
               <p className="text-2xl font-bold text-slate-800">{totalBooks}</p>
             </div>
           </div>
-          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-indigo-500">
-            <div className="p-3 bg-indigo-100 text-indigo-600 rounded-xl"><Layers size={24} /></div>
+          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-secondary">
+            <div className="p-3 bg-teal-100 text-secondary rounded-xl"><Layers size={24} /></div>
             <div>
               <p className="text-sm text-slate-500 font-medium">Unique Titles</p>
               <p className="text-2xl font-bold text-slate-800">{books.length}</p>
@@ -171,7 +171,7 @@ const AdminDashboard = () => {
         {/* Requests Management */}
         <div className="space-y-6">
           <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-            <Clock className="text-blue-600" /> Manage Rental Requests
+            <Clock className="text-primary" /> Manage Rental Requests
           </h3>
 
           <div className="glass-panel overflow-hidden">
@@ -231,11 +231,11 @@ const AdminDashboard = () => {
         <div className="space-y-6 pt-8">
           <div className="flex justify-between items-center">
             <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-              <Library className="text-blue-600" /> Library Inventory
+              <Library className="text-primary" /> Library Inventory
             </h3>
             <button 
               onClick={handleAddBookClick}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-xl font-bold hover:bg-primary-hover transition-colors shadow-sm"
             >
               <Plus size={18} /> Add Book
             </button>
@@ -305,11 +305,11 @@ const AdminDashboard = () => {
             <form onSubmit={saveBook} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Book Title</label>
-                <input type="text" required value={bookForm.title} onChange={e => setBookForm({...bookForm, title: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                <input type="text" required value={bookForm.title} onChange={e => setBookForm({...bookForm, title: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Author</label>
-                <input type="text" required value={bookForm.author} onChange={e => setBookForm({...bookForm, author: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                <input type="text" required value={bookForm.author} onChange={e => setBookForm({...bookForm, author: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -318,19 +318,19 @@ const AdminDashboard = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-600 mb-1">Rent Cost/Day (₹)</label>
-                  <input type="number" min="0" required value={bookForm.rentCost} onChange={e => setBookForm({...bookForm, rentCost: Number(e.target.value)})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                  <input type="number" min="0" required value={bookForm.rentCost} onChange={e => setBookForm({...bookForm, rentCost: Number(e.target.value)})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1">Cover Icon (Emoji)</label>
-                <input type="text" value={bookForm.coverIcon} onChange={e => setBookForm({...bookForm, coverIcon: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-xl" />
+                <input type="text" value={bookForm.coverIcon} onChange={e => setBookForm({...bookForm, coverIcon: e.target.value})} className="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-xl" />
               </div>
               
               <div className="flex gap-3 pt-4">
                 <button type="button" onClick={() => setShowBookModal(false)} className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50">
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-200">
+                <button type="submit" className="flex-1 bg-primary hover:bg-primary-hover text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20">
                   Save Book
                 </button>
               </div>

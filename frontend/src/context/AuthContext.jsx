@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loginApi, registerApi } from '../utils/api';
+import { loginApi, registerApi, sendOtpApi } from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -26,9 +26,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password) => {
+  const sendOtp = async (email) => {
     try {
-      const data = await registerApi(name, email, password);
+      return await sendOtpApi(email);
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to send OTP');
+    }
+  };
+
+  const register = async (name, email, password, otp) => {
+    try {
+      const data = await registerApi(name, email, password, otp);
       setUser(data.user);
       localStorage.setItem('sal_library_user', JSON.stringify({ ...data.user, token: data.token }));
       return data.user;
@@ -43,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, sendOtp, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
