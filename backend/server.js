@@ -99,19 +99,50 @@ app.post('/api/auth/send-otp', async (req, res) => {
     console.log(`   YOUR OTP IS: ${otp}`);
     console.log(`===========================================\n`);
 
-    // Send email (wrapped in try/catch so Brevo's 502 error doesn't break the app)
+    // Send email using Brevo API (bypass SMTP port blocks)
     try {
-      await transporter.sendMail({
-        from: cleanEnv('SMTP_SENDER_EMAIL'),
-        to: email,
+      const https = require('https');
+      const data = JSON.stringify({
+        sender: { email: cleanEnv('SMTP_SENDER_EMAIL'), name: 'Sal Library' },
+        to: [{ email: email }],
         subject: 'Your Verification OTP',
-        text: `Your OTP for Sal Library registration is: ${otp}. It is valid for 5 minutes.`,
+        textContent: `Your OTP for Sal Library registration is: ${otp}. It is valid for 5 minutes.`
       });
-      console.log('>>> SUCCESS: Email actually sent to Brevo!');
+
+      const options = {
+        hostname: 'api.brevo.com',
+        path: '/v3/smtp/email',
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': cleanEnv('SMTP_PASS'),
+          'content-type': 'application/json',
+          'content-length': data.length
+        }
+      };
+
+      const reqApi = https.request(options, (resApi) => {
+        let responseBody = '';
+        resApi.on('data', (chunk) => responseBody += chunk);
+        resApi.on('end', () => {
+          if (resApi.statusCode >= 200 && resApi.statusCode < 300) {
+            console.log('>>> SUCCESS: Email sent via Brevo API!');
+          } else {
+            console.error('>>> BREVO API ERROR:', responseBody);
+          }
+        });
+      });
+
+      reqApi.on('error', (error) => {
+        console.error('>>> BREVO API REQUEST FAILED:', error);
+      });
+
+      reqApi.write(data);
+      reqApi.end();
+      
     } catch (emailErr) {
-      console.log('\n>>> BREVO FAILED TO SEND EMAIL! EXACT REASON:');
+      console.log('\n>>> FAILED TO SEND EMAIL! REASON:');
       console.log(emailErr.message || emailErr);
-      console.log('\n');
     }
 
     res.json({ message: 'OTP generated! Check your backend terminal to see it.' });
