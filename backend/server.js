@@ -23,14 +23,32 @@ mongoose.connect(process.env.MONGO_URI.replace(/^"|"$|'/g, '').trim())
 .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Email Transporter setup
+const cleanEnv = (key) => (process.env[key] || '').replace(/^"|"$|'/g, '').trim();
+
+// Check for missing variables
+const requiredEnv = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_SENDER_EMAIL'];
+requiredEnv.forEach(key => {
+  if (!process.env[key]) console.warn(`>>> WARNING: Missing Environment Variable: ${key}`);
+});
+
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: false, // true for 465, false for other ports
+  host: cleanEnv('SMTP_HOST'),
+  port: parseInt(cleanEnv('SMTP_PORT')),
+  secure: false, 
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: cleanEnv('SMTP_USER'),
+    pass: cleanEnv('SMTP_PASS'),
   },
+  connectionTimeout: 10000, // 10 seconds
+});
+
+// Verify connection configuration
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log("SMTP Connection Error:", error);
+  } else {
+    console.log("SMTP Server is ready to take our messages");
+  }
 });
 
 // Initial data seeding
@@ -84,7 +102,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
     // Send email (wrapped in try/catch so Brevo's 502 error doesn't break the app)
     try {
       await transporter.sendMail({
-        from: `"Sal Library" <${process.env.SMTP_SENDER_EMAIL || process.env.SMTP_USER}>`,
+        from: cleanEnv('SMTP_SENDER_EMAIL'),
         to: email,
         subject: 'Your Verification OTP',
         text: `Your OTP for Sal Library registration is: ${otp}. It is valid for 5 minutes.`,
