@@ -50,31 +50,31 @@ const StudentDashboard = () => {
         </div>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-panel p-6 border-l-4 border-l-yellow-500">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-yellow-50 text-yellow-600 rounded-xl"><Clock size={24} /></div>
-              <div>
-                <p className="text-sm text-slate-500 font-medium">Pending Requests</p>
-                <p className="text-2xl font-bold text-slate-800">{stats.pending}</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-panel p-4 sm:p-6 border-l-4 border-l-yellow-500">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
+              <div className="p-2 sm:p-3 bg-yellow-50 text-yellow-600 rounded-xl"><Clock size={20} className="sm:w-6 sm:h-6" /></div>
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Pending</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{stats.pending}</p>
               </div>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-panel p-6 border-l-4 border-l-secondary">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-teal-50 text-secondary rounded-xl"><CheckCircle size={24} /></div>
-              <div>
-                <p className="text-sm text-slate-500 font-medium">Approved / Active</p>
-                <p className="text-2xl font-bold text-slate-800">{stats.approved}</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-panel p-4 sm:p-6 border-l-4 border-l-secondary">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
+              <div className="p-2 sm:p-3 bg-teal-50 text-secondary rounded-xl"><CheckCircle size={20} className="sm:w-6 sm:h-6" /></div>
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Approved</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{stats.approved}</p>
               </div>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-panel p-6 border-l-4 border-l-red-500">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-red-50 text-red-600 rounded-xl"><XCircle size={24} /></div>
-              <div>
-                <p className="text-sm text-slate-500 font-medium">Rejected</p>
-                <p className="text-2xl font-bold text-slate-800">{stats.rejected}</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-panel p-4 sm:p-6 border-l-4 border-l-red-500 col-span-2 md:col-span-1">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
+              <div className="p-2 sm:p-3 bg-red-50 text-red-600 rounded-xl"><XCircle size={20} className="sm:w-6 sm:h-6" /></div>
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Rejected</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-800">{stats.rejected}</p>
               </div>
             </div>
           </motion.div>

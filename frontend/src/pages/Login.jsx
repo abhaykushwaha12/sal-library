@@ -273,17 +273,6 @@ const Login = () => {
             </button>
           </div>
         )}
-
-        <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-          <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black mb-3">Demo Access</p>
-          <div className="text-xs text-slate-500 bg-slate-50 py-2 rounded-lg inline-block px-6 border border-slate-100">
-            {role === 'student' ? (
-              <span><span className="font-bold">ID:</span> student@sal.edu | <span className="font-bold">Pass:</span> student123</span>
-            ) : (
-              <span><span className="font-bold">ID:</span> admin@sal.edu | <span className="font-bold">Pass:</span> admin123</span>
-            )}
-          </div>
-        </div>
       </motion.div>
     </div>
   );

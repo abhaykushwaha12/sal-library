@@ -257,7 +257,7 @@ const isAdmin = (req, res, next) => {
 };
 
 // --- Book Routes ---
-app.get('/api/books', authenticateToken, async (req, res) => {
+app.get('/api/books', async (req, res) => {
   try {
     const books = await Book.find();
     res.json(books);

@@ -87,15 +87,15 @@ const Home = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Hero Section */}
-        <div className="glass-panel p-12 bg-gradient-to-r from-primary to-secondary text-white border-none shadow-lg shadow-primary/20 relative overflow-hidden">
-          <div className="relative z-10">
-            <h2 className="text-4xl font-bold mb-4">Discover Your Next Great Read</h2>
-            <p className="text-sky-100 max-w-2xl text-lg">
+        <div className="glass-panel p-6 sm:p-12 bg-gradient-to-br from-primary to-secondary text-white border-none shadow-lg shadow-primary/20 relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl">
+            <h2 className="text-3xl sm:text-5xl font-black mb-3 leading-tight uppercase tracking-tighter">Discover Your Next <br className="hidden sm:block" /> Great Read</h2>
+            <p className="text-sky-100 text-sm sm:text-lg font-medium opacity-90 leading-relaxed">
               Welcome to the SAL Education Digital Library. Access thousands of premium engineering, 
               management, and pharmacy resources at your fingertips.
             </p>
           </div>
-          <Library className="absolute right-[-20px] bottom-[-20px] text-white/10 w-64 h-64 rotate-12" />
+          <Library className="absolute right-[-40px] bottom-[-40px] text-white/10 w-48 h-48 sm:w-80 sm:h-80 rotate-12 pointer-events-none" />
         </div>
 
         {/* Search & Filter */}

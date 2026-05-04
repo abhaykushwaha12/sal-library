@@ -138,33 +138,33 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-primary">
-            <div className="p-3 bg-sky-100 text-primary rounded-xl"><BookOpen size={24} /></div>
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Total Books</p>
-              <p className="text-2xl font-bold text-slate-800">{totalBooks}</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="glass-panel p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 border-l-4 border-l-primary">
+            <div className="p-2 sm:p-3 bg-sky-100 text-primary rounded-xl"><BookOpen size={20} className="sm:w-6 sm:h-6" /></div>
+            <div className="text-center sm:text-left">
+              <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Total Books</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-800">{totalBooks}</p>
             </div>
           </div>
-          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-secondary">
-            <div className="p-3 bg-teal-100 text-secondary rounded-xl"><Layers size={24} /></div>
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Unique Titles</p>
-              <p className="text-2xl font-bold text-slate-800">{books.length}</p>
+          <div className="glass-panel p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 border-l-4 border-l-secondary">
+            <div className="p-2 sm:p-3 bg-teal-100 text-secondary rounded-xl"><Layers size={20} className="sm:w-6 sm:h-6" /></div>
+            <div className="text-center sm:text-left">
+              <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Titles</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-800">{books.length}</p>
             </div>
           </div>
-          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-yellow-500">
-            <div className="p-3 bg-yellow-100 text-yellow-600 rounded-xl"><AlertCircle size={24} /></div>
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Pending Requests</p>
-              <p className="text-2xl font-bold text-slate-800">{pendingCount}</p>
+          <div className="glass-panel p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 border-l-4 border-l-yellow-500">
+            <div className="p-2 sm:p-3 bg-yellow-100 text-yellow-600 rounded-xl"><AlertCircle size={20} className="sm:w-6 sm:h-6" /></div>
+            <div className="text-center sm:text-left">
+              <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Pending</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-800">{pendingCount}</p>
             </div>
           </div>
-          <div className="glass-panel p-6 flex items-center gap-4 border-l-4 border-l-green-500">
-            <div className="p-3 bg-green-100 text-green-600 rounded-xl"><Users size={24} /></div>
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Total Requests</p>
-              <p className="text-2xl font-bold text-slate-800">{requests.length}</p>
+          <div className="glass-panel p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 border-l-4 border-l-green-500">
+            <div className="p-2 sm:p-3 bg-green-100 text-green-600 rounded-xl"><Users size={20} className="sm:w-6 sm:h-6" /></div>
+            <div className="text-center sm:text-left">
+              <p className="text-[10px] sm:text-sm text-slate-500 font-medium uppercase tracking-wider">Requests</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-800">{requests.length}</p>
             </div>
           </div>
         </div>
@@ -175,40 +175,47 @@ const AdminDashboard = () => {
             <Clock className="text-primary" /> Manage Rental Requests
           </h3>
 
-          <div className="glass-panel overflow-hidden">
+          <div className="glass-panel overflow-hidden border-none sm:border">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[800px]">
+              <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-100">
-                    <th className="p-4 font-semibold text-slate-600">Student Info</th>
-                    <th className="p-4 font-semibold text-slate-600">Book Requested</th>
-                    <th className="p-4 font-semibold text-slate-600">Duration</th>
-                    <th className="p-4 font-semibold text-slate-600">Status</th>
-                    <th className="p-4 font-semibold text-slate-600">Actions</th>
+                    <th className="p-4 font-bold text-slate-600 text-xs uppercase tracking-widest whitespace-nowrap">Student Details</th>
+                    <th className="p-4 font-bold text-slate-600 text-xs uppercase tracking-widest whitespace-nowrap">Book Info</th>
+                    <th className="p-4 font-bold text-slate-600 text-xs uppercase tracking-widest whitespace-nowrap">Duration</th>
+                    <th className="p-4 font-bold text-slate-600 text-xs uppercase tracking-widest whitespace-nowrap">Status</th>
+                    <th className="p-4 font-bold text-slate-600 text-xs uppercase tracking-widest whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {requests.length === 0 ? (
-                    <tr><td colSpan="5" className="p-8 text-center text-slate-500">No requests to show.</td></tr>
+                    <tr><td colSpan="5" className="p-8 text-center text-slate-500 font-medium">No requests in the system.</td></tr>
                   ) : (
                     requests.map(req => (
-                      <tr key={req._id || req.id} className="hover:bg-slate-50/50">
-                        <td className="p-4">
-                          <p className="font-bold text-slate-800 text-lg leading-tight">{req.studentName}</p>
-                          <div className="mt-1 space-y-0.5">
-                            <p className="text-xs font-bold text-primary flex items-center gap-1 uppercase tracking-wider">
-                              <span className="bg-primary/10 px-1.5 py-0.5 rounded">ID: {req.studentId}</span>
-                              <span className="bg-secondary/10 text-secondary px-1.5 py-0.5 rounded">Sem: {req.studentSemester}</span>
-                            </p>
-                            <p className="text-xs text-slate-600 font-medium">{req.studentCollege}</p>
-                            <p className="text-xs text-slate-500">{req.studentBranch}</p>
-                            <p className="text-xs text-slate-400 italic">{req.studentEmail} | {req.studentPhone}</p>
+                      <tr key={req._id || req.id} className="hover:bg-slate-50/50 group transition-colors">
+                        <td className="p-4 min-w-[250px]">
+                          <p className="font-bold text-slate-800 text-base leading-tight group-hover:text-primary transition-colors">{req.studentName}</p>
+                          <div className="mt-1.5 space-y-1">
+                            <div className="flex flex-wrap gap-1">
+                              <span className="bg-primary/10 text-primary text-[10px] font-black px-1.5 py-0.5 rounded uppercase">{req.studentId}</span>
+                              <span className="bg-secondary/10 text-secondary text-[10px] font-black px-1.5 py-0.5 rounded uppercase">Sem {req.studentSemester}</span>
+                            </div>
+                            <p className="text-[11px] text-slate-500 font-bold leading-tight line-clamp-1">{req.studentCollege}</p>
+                            <p className="text-[10px] text-slate-400 italic line-clamp-1">{req.studentEmail}</p>
                           </div>
                         </td>
-                        <td className="p-4 font-medium text-slate-700">{req.bookName}</td>
-                        <td className="p-4 text-slate-600">{req.rentalDays} Days</td>
+                        <td className="p-4 min-w-[180px]">
+                          <p className="font-bold text-slate-700 text-sm">{req.bookName}</p>
+                          <p className="text-[10px] text-slate-400 mt-0.5">ID: {req.bookId?.slice(-6).toUpperCase()}</p>
+                        </td>
                         <td className="p-4">
-                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                          <div className="flex items-center gap-1.5">
+                            <Clock size={12} className="text-slate-400" />
+                            <span className="text-sm font-bold text-slate-600">{req.rentalDays}d</span>
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${
                             req.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
                             req.status.includes('Approved') ? 'bg-green-100 text-green-700' :
                             'bg-red-100 text-red-700'
@@ -216,14 +223,14 @@ const AdminDashboard = () => {
                             {req.status === 'Pending' ? 'Pending' : (req.status.includes('Approved') ? 'Approved' : 'Rejected')}
                           </span>
                         </td>
-                        <td className="p-4">
+                        <td className="p-4 text-right">
                           {req.status === 'Pending' ? (
-                            <div className="flex gap-2">
-                              <button onClick={() => openApproveModal(req)} className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-sm font-bold hover:bg-green-200 transition-colors">Approve</button>
-                              <button onClick={() => rejectRequest(req._id || req.id)} className="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-sm font-bold hover:bg-red-200 transition-colors">Reject</button>
+                            <div className="flex flex-col sm:flex-row gap-2 justify-end">
+                              <button onClick={() => openApproveModal(req)} className="px-3 py-1.5 bg-primary text-white rounded-lg text-[10px] font-black uppercase hover:bg-primary-hover transition-all shadow-sm">Approve</button>
+                              <button onClick={() => rejectRequest(req._id || req.id)} className="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase hover:bg-red-50 hover:text-red-600 transition-all">Reject</button>
                             </div>
                           ) : (
-                            <span className="text-slate-400 text-sm italic">Processed</span>
+                            <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Completed</span>
                           )}
                         </td>
                       </tr>
