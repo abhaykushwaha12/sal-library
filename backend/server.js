@@ -34,7 +34,7 @@ requiredEnv.forEach(key => {
 const transporter = nodemailer.createTransport({
   host: cleanEnv('SMTP_HOST'),
   port: parseInt(cleanEnv('SMTP_PORT')),
-  secure: false, 
+  secure: parseInt(cleanEnv('SMTP_PORT')) === 465, 
   auth: {
     user: cleanEnv('SMTP_USER'),
     pass: cleanEnv('SMTP_PASS'),
