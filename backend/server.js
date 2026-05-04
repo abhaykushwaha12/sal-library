@@ -129,7 +129,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
 
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, password, otp } = req.body;
+    const { name, email, password, otp, college, enrollmentNo, branch, semester, phone } = req.body;
     
     if (!otp) return res.status(400).json({ message: 'OTP is required' });
 
@@ -144,13 +144,45 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword, role: 'student' });
+    const user = new User({ 
+      name, 
+      email, 
+      password: hashedPassword, 
+      role: 'student',
+      college,
+      enrollmentNo,
+      branch,
+      semester,
+      phone
+    });
     await user.save();
 
     await OTP.deleteOne({ email });
 
-    const token = jwt.sign({ email: user.email, role: user.role, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.status(201).json({ token, user: { email: user.email, role: user.role, name: user.name } });
+    const token = jwt.sign({ 
+      email: user.email, 
+      role: user.role, 
+      name: user.name,
+      college: user.college,
+      enrollmentNo: user.enrollmentNo,
+      branch: user.branch,
+      semester: user.semester,
+      phone: user.phone
+    }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    
+    res.status(201).json({ 
+      token, 
+      user: { 
+        email: user.email, 
+        role: user.role, 
+        name: user.name,
+        college: user.college,
+        enrollmentNo: user.enrollmentNo,
+        branch: user.branch,
+        semester: user.semester,
+        phone: user.phone
+      } 
+    });
   } catch (err) {
     res.status(500).json({ message: 'Error registering user' });
   }
@@ -174,8 +206,29 @@ app.post('/api/auth/login', async (req, res) => {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
       
-      const token = jwt.sign({ email: user.email, role: user.role, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1d' });
-      return res.json({ token, user: { email: user.email, role: user.role, name: user.name } });
+      const token = jwt.sign({ 
+        email: user.email, 
+        role: user.role, 
+        name: user.name,
+        college: user.college,
+        enrollmentNo: user.enrollmentNo,
+        branch: user.branch,
+        semester: user.semester,
+        phone: user.phone
+      }, process.env.JWT_SECRET, { expiresIn: '1d' });
+      return res.json({ 
+        token, 
+        user: { 
+          email: user.email, 
+          role: user.role, 
+          name: user.name,
+          college: user.college,
+          enrollmentNo: user.enrollmentNo,
+          branch: user.branch,
+          semester: user.semester,
+          phone: user.phone
+        } 
+      });
     }
 
     res.status(401).json({ message: 'Invalid credentials' });

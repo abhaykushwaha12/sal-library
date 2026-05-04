@@ -5,7 +5,7 @@ const BookCard = ({ book, onRent, isAdmin, onEdit }) => {
   return (
     <div className="glass-panel p-6 flex flex-col gap-4 transition-all hover:shadow-2xl hover:-translate-y-1">
       <div className="flex justify-between items-start">
-        <div className="w-16 h-20 bg-blue-100 rounded-lg flex items-center justify-center text-2xl shadow-inner overflow-hidden flex-shrink-0">
+        <div className="w-16 h-20 bg-primary/10 rounded-lg flex items-center justify-center text-2xl shadow-inner overflow-hidden flex-shrink-0">
           {(book.coverIcon && (book.coverIcon.includes('.png') || book.coverIcon.includes('.jpg'))) ? (
             <img src={book.coverIcon} alt={book.title} className="w-full h-full object-cover" />
           ) : (
@@ -24,12 +24,12 @@ const BookCard = ({ book, onRent, isAdmin, onEdit }) => {
 
       <div className="mt-2 pt-4 border-t border-slate-100 flex justify-between items-center text-sm">
         <div className="flex items-center gap-1.5 text-slate-600 font-medium">
-          <Layers size={16} className="text-blue-500" />
+          <Layers size={16} className="text-primary" />
           {book.quantity} Left
         </div>
         <div className="flex items-center gap-1.5 text-slate-600 font-medium">
-          <Tag size={16} className="text-blue-500" />
-          ₹{book.rentCost}/day
+          <Tag size={16} className="text-primary" />
+          ₹40 / 15 Days
         </div>
       </div>
 
@@ -37,7 +37,7 @@ const BookCard = ({ book, onRent, isAdmin, onEdit }) => {
         {isAdmin ? (
           <button 
             onClick={() => onEdit(book)}
-            className="w-full py-2.5 rounded-lg border-2 border-blue-100 text-blue-600 font-bold hover:bg-blue-50 transition-colors"
+            className="w-full py-2.5 rounded-lg border-2 border-primary/10 text-primary font-bold hover:bg-primary/5 transition-colors"
           >
             Edit Book
           </button>
@@ -48,7 +48,7 @@ const BookCard = ({ book, onRent, isAdmin, onEdit }) => {
             className={`w-full py-2.5 rounded-lg font-bold transition-all shadow-md ${
               book.quantity === 0 
               ? 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-none' 
-              : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-200 active:translate-y-0.5'
+              : 'bg-primary text-white hover:bg-primary-hover hover:shadow-primary/30 active:translate-y-0.5'
             }`}
           >
             {book.quantity === 0 ? 'Unavailable' : 'Rent Book'}

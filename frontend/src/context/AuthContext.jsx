@@ -34,9 +34,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password, otp) => {
+  const register = async (userData) => {
     try {
-      const data = await registerApi(name, email, password, otp);
+      const data = await registerApi(userData);
       setUser(data.user);
       localStorage.setItem('sal_library_user', JSON.stringify({ ...data.user, token: data.token }));
       return data.user;

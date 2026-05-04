@@ -1,48 +1,87 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, BookOpen, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { LogOut, UserCircle, LogIn } from 'lucide-react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
-const Navbar = ({ title }) => {
+const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Dashboard', path: user?.role === 'admin' ? '/admin' : '/student', protected: true },
+    { name: 'About SAL', path: '/about' },
+  ];
+
   return (
-    <nav className="glass-panel sticky top-4 z-40 mx-4 mb-8 px-6 py-4 flex items-center justify-between">
+    <nav className="glass-panel sticky top-4 z-40 mx-4 mb-8 px-6 py-3 flex items-center justify-between">
+      {/* Left: Logo */}
+      <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
+        <div className="p-1 bg-white rounded-lg shadow-sm border border-slate-100">
+          <img src="/WhatsApp Image 2026-05-03 at 6.27.39 PM.jpeg" alt="SAL Logo" className="h-10 w-auto object-contain" />
+        </div>
+      </div>
+
+      {/* Center: Navigation Links */}
+      <div className="hidden md:flex items-center gap-8">
+        {navLinks.map((link) => {
+          if (link.protected && !user) return null;
+          const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
+          return (
+            <Link 
+              key={link.path}
+              to={link.path}
+              className={`relative py-2 text-sm font-bold transition-all ${isActive ? 'text-primary' : 'text-slate-500 hover:text-primary'}`}
+            >
+              {link.name}
+              {isActive && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full" />
+              )}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Right: User Profile / Login */}
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
-          <BookOpen size={24} />
-        </div>
-        <div>
-          <h1 className="text-xl font-bold text-slate-800 hidden sm:block">Sal E-Library</h1>
-          <p className="text-sm font-medium text-blue-600 sm:hidden">{title}</p>
-        </div>
-      </div>
-
-      <div className="hidden sm:block">
-        <h2 className="text-lg font-semibold text-slate-700">{title}</h2>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <div className="hidden sm:flex items-center gap-2 text-slate-600 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-          <User size={16} />
-          <span className="text-sm font-medium">{user?.email}</span>
-        </div>
-        <button 
-          onClick={handleLogout}
-          className="flex items-center gap-2 text-slate-600 hover:text-red-600 transition-colors px-3 py-2 rounded-lg hover:bg-red-50"
-        >
-          <LogOut size={18} />
-          <span className="font-medium hidden sm:block">Logout</span>
-        </button>
+        {user ? (
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => navigate('/profile')}
+              className="p-1.5 rounded-full hover:bg-primary/10 text-slate-600 hover:text-primary transition-all flex items-center gap-2"
+              title="My Profile"
+            >
+              <span className="text-sm font-bold hidden sm:block">{user.name || 'User'}</span>
+              <UserCircle size={32} strokeWidth={1.5} />
+            </button>
+            <div className="h-6 w-px bg-slate-200 mx-1" />
+            <button 
+              onClick={handleLogout}
+              className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+              title="Logout"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
+        ) : (
+          <button 
+            onClick={() => navigate('/login')}
+            className="flex items-center gap-2 bg-primary text-white px-5 py-2 rounded-xl font-bold hover:bg-primary-hover transition-all shadow-md hover:shadow-primary/30"
+          >
+            <LogIn size={18} />
+            <span>Login</span>
+          </button>
+        )}
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+

@@ -3,6 +3,9 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import StudentDashboard from './pages/StudentDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import Home from './pages/Home';
+import About from './pages/About';
+import Profile from './pages/Profile';
 import { initStorage } from './utils/localStorage';
 import { useEffect } from 'react';
 
@@ -26,6 +29,14 @@ function AppContent() {
     <Routes>
       <Route path="/login" element={!user ? <Login /> : <Navigate to={user.role === 'admin' ? '/admin' : '/student'} replace />} />
       
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
+      } />
+      
       <Route path="/student/*" element={
         <ProtectedRoute allowedRole="student">
           <StudentDashboard />
@@ -37,8 +48,6 @@ function AppContent() {
           <AdminDashboard />
         </ProtectedRoute>
       } />
-
-      <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

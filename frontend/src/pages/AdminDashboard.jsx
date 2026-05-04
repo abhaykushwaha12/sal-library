@@ -82,7 +82,8 @@ const AdminDashboard = () => {
   const openApproveModal = (req) => {
     const book = books.find(b => (b._id || b.id) === req.bookId);
     setSelectedRequest(req);
-    setApproveCost(book ? book.rentCost * req.rentalDays : 0);
+    const calculatedCost = req.rentalDays <= 15 ? 40 : 40 + (req.rentalDays - 15) * 5;
+    setApproveCost(calculatedCost);
     setShowApproveModal(true);
   };
 
@@ -132,7 +133,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-12">
-      <Navbar title="Admin Portal" />
+      <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
@@ -193,9 +194,16 @@ const AdminDashboard = () => {
                     requests.map(req => (
                       <tr key={req._id || req.id} className="hover:bg-slate-50/50">
                         <td className="p-4">
-                          <p className="font-bold text-slate-800">{req.studentName}</p>
-                          <p className="text-xs text-slate-500">{req.studentId} | {req.studentEmail}</p>
-                          <p className="text-xs text-slate-500">{req.studentPhone}</p>
+                          <p className="font-bold text-slate-800 text-lg leading-tight">{req.studentName}</p>
+                          <div className="mt-1 space-y-0.5">
+                            <p className="text-xs font-bold text-primary flex items-center gap-1 uppercase tracking-wider">
+                              <span className="bg-primary/10 px-1.5 py-0.5 rounded">ID: {req.studentId}</span>
+                              <span className="bg-secondary/10 text-secondary px-1.5 py-0.5 rounded">Sem: {req.studentSemester}</span>
+                            </p>
+                            <p className="text-xs text-slate-600 font-medium">{req.studentCollege}</p>
+                            <p className="text-xs text-slate-500">{req.studentBranch}</p>
+                            <p className="text-xs text-slate-400 italic">{req.studentEmail} | {req.studentPhone}</p>
+                          </div>
                         </td>
                         <td className="p-4 font-medium text-slate-700">{req.bookName}</td>
                         <td className="p-4 text-slate-600">{req.rentalDays} Days</td>
@@ -266,7 +274,9 @@ const AdminDashboard = () => {
             <p className="text-slate-500 mb-6 text-sm">Review and set final rental cost.</p>
             
             <div className="bg-slate-50 p-4 rounded-xl mb-6 space-y-2 border border-slate-100">
-              <p className="text-sm"><span className="font-semibold">Student:</span> {selectedRequest?.studentName}</p>
+              <p className="text-sm"><span className="font-semibold">Student:</span> {selectedRequest?.studentName} ({selectedRequest?.studentId})</p>
+              <p className="text-xs text-slate-500">{selectedRequest?.studentCollege} | {selectedRequest?.studentBranch} (Sem {selectedRequest?.studentSemester})</p>
+              <div className="h-px bg-slate-200 my-2" />
               <p className="text-sm"><span className="font-semibold">Book:</span> {selectedRequest?.bookName}</p>
               <p className="text-sm"><span className="font-semibold">Duration:</span> {selectedRequest?.rentalDays} days</p>
             </div>
