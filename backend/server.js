@@ -81,13 +81,16 @@ app.post('/api/auth/send-otp', async (req, res) => {
         textContent: `Your OTP for Sal Library registration is: ${otp}. It is valid for 5 minutes.`
       });
 
+      const apiKey = cleanEnv('SMTP_PASS');
+      console.log(`>>> DEBUG: API Key Length: ${apiKey.length}, Starts with: ${apiKey.substring(0, 5)}..., Ends with: ...${apiKey.substring(apiKey.length - 5)}`);
+
       const options = {
         hostname: 'api.brevo.com',
         path: '/v3/smtp/email',
         method: 'POST',
         headers: {
           'accept': 'application/json',
-          'api-key': cleanEnv('SMTP_PASS'),
+          'api-key': apiKey,
           'content-type': 'application/json',
           'content-length': data.length
         }
