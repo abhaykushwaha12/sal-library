@@ -9,7 +9,6 @@ const Book = require('./models/Book');
 const Request = require('./models/Request');
 const User = require('./models/User');
 const OTP = require('./models/OTP');
-const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,34 +21,7 @@ mongoose.connect(process.env.MONGO_URI.replace(/^"|"$|'/g, '').trim())
 .then(() => console.log('MongoDB Connected Successfully'))
 .catch(err => console.error('MongoDB Connection Error:', err));
 
-// Email Transporter setup
 const cleanEnv = (key) => (process.env[key] || '').replace(/^"|"$|'/g, '').trim();
-
-// Check for missing variables
-const requiredEnv = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_SENDER_EMAIL'];
-requiredEnv.forEach(key => {
-  if (!process.env[key]) console.warn(`>>> WARNING: Missing Environment Variable: ${key}`);
-});
-
-const transporter = nodemailer.createTransport({
-  host: cleanEnv('SMTP_HOST'),
-  port: parseInt(cleanEnv('SMTP_PORT')),
-  secure: parseInt(cleanEnv('SMTP_PORT')) === 465, 
-  auth: {
-    user: cleanEnv('SMTP_USER'),
-    pass: cleanEnv('SMTP_PASS'),
-  },
-  connectionTimeout: 10000, // 10 seconds
-});
-
-// Verify connection configuration
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log("SMTP Connection Error:", error);
-  } else {
-    console.log("SMTP Server is ready to take our messages");
-  }
-});
 
 // Initial data seeding
 const DEFAULT_BOOKS = [
